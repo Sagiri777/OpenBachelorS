@@ -1,6 +1,15 @@
 import sys
 import asyncio
 
+# 设置适合不同操作系统的事件循环策略
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+elif sys.platform == "darwin":  # macOS
+    # macOS使用默认的事件循环策略，通常工作良好
+    pass
+import sys
+import asyncio
+
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

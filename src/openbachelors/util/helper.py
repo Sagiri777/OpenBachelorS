@@ -1,5 +1,26 @@
 import os
 import json
+import sys
+import platform
+from base64 import urlsafe_b64encode, urlsafe_b64decode
+from base64 import b64encode, b64decode
+import io
+import zipfile
+import subprocess
+from uuid import uuid4
+import re
+from hashlib import md5
+import random
+import asyncio
+
+from pathvalidate import is_valid_filename
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+import aiofiles
+
+from ..const.filepath import TMP_DIRPATH
+import os
+import json
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 from base64 import b64encode, b64decode
 import io
@@ -117,10 +138,17 @@ async def download_file(url: str, filename: str, dirpath: str):
     os.makedirs(TMP_DIRPATH, exist_ok=True)
 
     tmp_filename = str(uuid4())
+    
+    # 根据操作系统选择合适的aria2c可执行文件
+    if platform.system() == "Windows":
+        aria2c_cmd = "aria2c.exe"
+    else:  # macOS, Linux等Unix系统
+        aria2c_cmd = "aria2c"
+    
     proc = await asyncio.to_thread(
         lambda: subprocess.run(
             [
-                "aria2c",
+                aria2c_cmd,
                 "-q",
                 "-d",
                 TMP_DIRPATH,

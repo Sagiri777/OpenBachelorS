@@ -25,6 +25,10 @@ dependencies = [
 ]
 
 [tool.poetry]
+name = "openbachelors"
+version = "0.1.0"
+description = "An open source server implementation for Arknights-like game"
+authors = ["Your Name <you@example.com>"]
 packages = [{ include = "openbachelors", from = "src" }]
 
 
