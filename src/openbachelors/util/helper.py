@@ -103,6 +103,19 @@ def get_assist_lst_idx_from_friend_uid(friend_uid: str):
     return int(friend_uid) - ASSIST_LST_IDX_UID_OFFSET
 
 
+def get_friend_uid_from_assist_lst_idx_ext(
+    assist_lst_idx: int, profession_idx: int
+) -> str:
+    return str(assist_lst_idx + ASSIST_LST_IDX_UID_OFFSET * (profession_idx + 1))
+
+
+def get_assist_lst_idx_from_friend_uid_ext(friend_uid: str):
+    int_friend_uid = int(friend_uid)
+    profession_idx = int_friend_uid // ASSIST_LST_IDX_UID_OFFSET - 1
+    assist_lst_idx = int_friend_uid % ASSIST_LST_IDX_UID_OFFSET
+    return profession_idx, assist_lst_idx
+
+
 def convert_char_obj_to_assist_char_obj(char_obj: dict):
     if "skin" in char_obj:
         char_obj["skinId"] = char_obj["skin"]

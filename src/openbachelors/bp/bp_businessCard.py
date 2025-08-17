@@ -10,7 +10,10 @@ from ..util.helper import (
     get_friend_uid_from_assist_lst_idx,
     get_assist_lst_idx_from_friend_uid,
     convert_char_obj_to_assist_char_obj,
+    get_friend_uid_from_assist_lst_idx_ext,
+    get_assist_lst_idx_from_friend_uid_ext,
 )
+from ..util.assist_ext import profession_lst, profession_assist_lst_dict
 
 router = APIRouter()
 
@@ -22,8 +25,15 @@ async def businessCard_getOtherPlayerNameCard(player_data, request: Request):
 
     friend_uid = request_json["uid"]
 
-    assist_lst_idx = get_assist_lst_idx_from_friend_uid(friend_uid)
-    assist_lst = const_json_loader[ASSIST_JSON]["assist_lst"].copy()
+    if const_json_loader[CONFIG_JSON]["assist_ext"]:
+        profession_idx, assist_lst_idx = get_assist_lst_idx_from_friend_uid_ext(
+            friend_uid
+        )
+        profession = profession_lst[profession_idx]
+        assist_lst = profession_assist_lst_dict[profession].copy()
+    else:
+        assist_lst_idx = get_assist_lst_idx_from_friend_uid(friend_uid)
+        assist_lst = const_json_loader[ASSIST_JSON]["assist_lst"].copy()
     assist_char_id = assist_lst[assist_lst_idx]
     assist_char_num_id = get_char_num_id(assist_char_id)
 

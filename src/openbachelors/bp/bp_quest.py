@@ -10,8 +10,11 @@ from ..util.helper import (
     get_friend_uid_from_assist_lst_idx,
     get_assist_lst_idx_from_friend_uid,
     convert_char_obj_to_assist_char_obj,
+    get_friend_uid_from_assist_lst_idx_ext,
+    get_assist_lst_idx_from_friend_uid_ext,
 )
 from ..util.battle_log_logger import log_battle_log_if_necessary
+from ..util.assist_ext import profession_lst, profession_assist_lst_dict
 
 
 router = APIRouter()
@@ -115,11 +118,19 @@ async def quest_battleContinue(player_data, request: Request):
 async def quest_getAssistList(player_data, request: Request):
     request_json = await request.json()
 
-    assist_lst = const_json_loader[ASSIST_JSON]["assist_lst"].copy()
-
-    friend_uid_lst = [
-        get_friend_uid_from_assist_lst_idx(i) for i in range(len(assist_lst))
-    ]
+    if const_json_loader[CONFIG_JSON]["assist_ext"]:
+        profession = request_json["profession"]
+        profession_idx = profession_lst.copy().index(profession)
+        assist_lst = profession_assist_lst_dict[profession].copy()
+        friend_uid_lst = [
+            get_friend_uid_from_assist_lst_idx_ext(i, profession_idx)
+            for i in range(len(assist_lst))
+        ]
+    else:
+        assist_lst = const_json_loader[ASSIST_JSON]["assist_lst"].copy()
+        friend_uid_lst = [
+            get_friend_uid_from_assist_lst_idx(i) for i in range(len(assist_lst))
+        ]
 
     response = {"allowAskTs": 1700000000, "assistList": []}
 

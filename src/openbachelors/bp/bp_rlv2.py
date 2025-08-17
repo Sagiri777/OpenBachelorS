@@ -18,21 +18,9 @@ from ..util.helper import (
     get_char_num_id,
 )
 from ..util.battle_log_logger import log_battle_log_if_necessary
+from ..util.assist_ext import profession_lst
 
 router = APIRouter()
-
-profession_lst = ConstJson(
-    [
-        "PIONEER",
-        "WARRIOR",
-        "TANK",
-        "SNIPER",
-        "CASTER",
-        "MEDIC",
-        "SUPPORT",
-        "SPECIAL",
-    ]
-)
 
 
 def build_profession_char_id_lst_dict():

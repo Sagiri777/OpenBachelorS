@@ -6,6 +6,7 @@ from enum import Enum
 import inspect
 import asyncio
 import logging
+import time
 
 from psycopg.types.json import Json
 from fastapi import Response
@@ -1167,6 +1168,44 @@ class PlayerData(OverlayJson, SavableThing):
         return {"modified": hg_modifed_dict, "deleted": hg_deleted_dict}
 
 
+MESSAGE_COOLDOWN = 60
+
+
+def handle_message(player_data, json_response):
+    cur_ts = time.time()
+    last_message_ts = player_data.extra_save.save_obj.get("last_message_ts", 0)
+
+    if cur_ts - last_message_ts < MESSAGE_COOLDOWN:
+        return
+
+    message_json = const_json_loader[MESSAGE_JSON]
+
+    received_message_lst = player_data.extra_save.save_obj["received_message_lst"]
+
+    for message_idx, message_obj in message_json["message_lst"]:
+        message_id = message_obj["message_id"]
+        if message_id not in received_message_lst:
+            received_message_lst.append(message_id)
+
+            message_str = message_obj["message_str"]
+            payload_obj = {
+                "content": message_str,
+                "loop": 3,
+                "majorVersion": "369",
+            }
+
+            json_response["pushMessage"] = [
+                {
+                    "path": "flushAlerts",
+                    "payload": {"data": json.dumps(payload_obj)},
+                }
+            ]
+
+            player_data.extra_save.save_obj["last_message_ts"] = cur_ts
+
+            break
+
+
 def player_data_decorator(func):
     func_sig = inspect.signature(func)
     func_param_lst = [
@@ -1182,31 +1221,7 @@ def player_data_decorator(func):
         if not isinstance(json_response, dict):
             return json_response
 
-        # --- message  ---
-        message_json = const_json_loader[MESSAGE_JSON]
-
-        received_message_lst = player_data.extra_save.save_obj["received_message_lst"]
-
-        for message_idx, message_obj in message_json["message_lst"]:
-            message_id = message_obj["message_id"]
-            if message_id not in received_message_lst:
-                received_message_lst.append(message_id)
-
-                message_str = message_obj["message_str"]
-                payload_obj = {
-                    "content": message_str,
-                    "loop": 3,
-                    "majorVersion": "369",
-                }
-
-                json_response["pushMessage"] = [
-                    {
-                        "path": "flushAlerts",
-                        "payload": {"data": json.dumps(payload_obj)},
-                    }
-                ]
-
-                break
+        handle_message(player_data, json_response)
 
         delta_response = player_data.build_delta_response()
         await player_data.save()
