@@ -466,6 +466,51 @@ class AdvancedGachaBasicManager:
 
 
 class AdvancedGachaSimpleManager(AdvancedGachaBasicManager):
+    def __init__(self, player_data, request_json, response, pool_id, gacha_type):
+        super().__init__(player_data, request_json, response, pool_id, gacha_type)
+
+        self.override_avail_char_info = self.get_override_avail_char_info()
+
+        self.override_up_char_info = self.get_override_up_char_info()
+
+    def get_override_avail_char_info(self):
+        gacha_data = const_json_loader[GACHA_DATA]
+        if self.pool_id not in gacha_data["override_avail_char_info"]:
+            return None
+
+        override_avail_char_info = self.get_basic_avail_char_info().copy()
+        override_avail_char_info.update(
+            gacha_data["override_avail_char_info"][self.pool_id].copy()
+        )
+        return ConstJson(override_avail_char_info)
+
+    def get_override_up_char_info(self):
+        if self.gacha_type not in self.player_data["gacha"]:
+            return None
+
+        if self.pool_id not in self.player_data["gacha"][self.gacha_type]:
+            return None
+
+        if "upChar" not in self.player_data["gacha"][self.gacha_type][self.pool_id]:
+            return None
+
+        override_up_char_info = {}
+
+        k_p_lst = [("5", 0.5), ("4", 0.5)]
+
+        for k, p in k_p_lst:
+            if k in self.player_data["gacha"][self.gacha_type][self.pool_id]["upChar"]:
+                char_id_lst = self.player_data["gacha"][self.gacha_type][self.pool_id][
+                    "upChar"
+                ][k].copy()
+
+                override_up_char_info[f"TIER_{int(k) + 1}"] = {
+                    "char_id_lst": char_id_lst,
+                    "percent": p / len(char_id_lst),
+                }
+
+        return ConstJson(override_up_char_info)
+
     def get_basic_tier_6_pity_key(self):
         if self.is_classic:
             return "advanced_gacha_classic_basic_tier_6_pity"
@@ -494,14 +539,22 @@ class AdvancedGachaSimpleManager(AdvancedGachaBasicManager):
             basic_tier_6_pity - self.BASIC_TIER_6_PITY_THRESHOLD + 1
         )
 
-    def get_avail_char_info(self):
+    def get_basic_avail_char_info(self):
         gacha_data = const_json_loader[GACHA_DATA]
+
         if self.is_classic:
             return gacha_data["classic_avail_char_info"]
         else:
             return gacha_data["normal_avail_char_info"]
 
+    def get_avail_char_info(self):
+        if self.override_avail_char_info is not None:
+            return self.override_avail_char_info
+        return self.get_basic_avail_char_info()
+
     def get_up_char_info(self):
+        if self.override_up_char_info is not None:
+            return self.override_up_char_info
         gacha_data = const_json_loader[GACHA_DATA]
         if self.pool_id in gacha_data["up_char_info"]:
             return gacha_data["up_char_info"][self.pool_id]
@@ -1228,6 +1281,100 @@ class AdvancedGachaLimitedManager(AdvancedGachaSimpleManager):
         ]
 
 
+class AdvancedGachaNormalManager(AdvancedGachaSimpleManager):
+    def gacha_getPoolDetail(self):
+        super().gacha_getPoolDetail()
+
+        if self.is_classic:
+            gacha_obj_list = [
+                {
+                    "gachaObject": "TEXT",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "卡池干员列表",
+                },
+                {
+                    "gachaObject": "RATE_UP_6",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "中坚寻访",
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 1,
+                    "imageType": 0,
+                    "param": "全部可能出现的干员",
+                },
+                {
+                    "gachaObject": "PICKUP_WITH_56",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": null,
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "该寻访为【中坚寻访】",
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 5,
+                    "imageType": 0,
+                    "param": "在所有<@ga.adGacha>【中坚寻访】</>中，如果连续<@ga.percent>50</>次没有获得6星干员，则下一次获得6星干员的概率将从原本的<@ga.percent>2%</>提升至<@ga.percent>4%</>。如果该次还没有寻访到6星干员，则下一次寻访获得6星的概率由<@ga.percent>4%</>提升到<@ga.percent>6%</>。依此类推，每次提高<@ga.percent>2%</>获得6星干员的概率，直至达到<@ga.percent>100%</>时必定获得6星干员。\n在任何一个<@ga.adGacha>【中坚寻访】</>中，没有获得6星干员时，都会累积次数，该次数不会因为<@ga.adGacha>【中坚寻访】</>的结束而清零。因为累积次数而增加的获得概率，也会应用于接下来任意一次<@ga.adGacha>【中坚寻访】</>。\n<@ga.attention>【注意】</>任何时候在任意一个<@ga.adGacha>【中坚寻访】</>中获得6星干员，后续在<@ga.adGacha>【中坚寻访】</>中获得6星干员的概率将恢复到<@ga.percent>2%</>。",
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "【通用凭证】获取规则",
+                },
+                {"gachaObject": "IMAGE", "type": 0, "imageType": 0, "param": null},
+            ]
+
+        else:
+            gacha_obj_list = [
+                {
+                    "gachaObject": "TEXT",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "卡池干员列表",
+                },
+                {
+                    "gachaObject": "RATE_UP_6",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "标准寻访",
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 1,
+                    "imageType": 0,
+                    "param": "全部可能出现的干员",
+                },
+                {
+                    "gachaObject": "PICKUP_WITH_56",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": null,
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 0,
+                    "imageType": 0,
+                    "param": "该寻访为【标准寻访】",
+                },
+                {
+                    "gachaObject": "TEXT",
+                    "type": 5,
+                    "imageType": 0,
+                    "param": "在所有<@ga.adGacha>【标准寻访】</>中，如果连续<@ga.percent>50</>次没有获得6星干员，则下一次获得6星干员的概率将从原本的<@ga.percent>2%</>提升至<@ga.percent>4%</>。如果该次还没有寻访到6星干员，则下一次寻访获得6星的概率由<@ga.percent>4%</>提升到<@ga.percent>6%</>。依此类推，每次提高<@ga.percent>2%</>获得6星干员的概率，直至达到<@ga.percent>100%</>时必定获得6星干员。\n在任何一个<@ga.adGacha>【标准寻访】</>中，没有获得6星干员时，都会累积次数，该次数不会因为<@ga.adGacha>【标准寻访】</>的结束而清零。因为累积次数而增加的获得概率，也会应用于接下来任意一次<@ga.adGacha>【标准寻访】</>。\n<@ga.attention>【注意】</>任何时候在任意一个<@ga.adGacha>【标准寻访】</>中获得6星干员，后续在<@ga.adGacha>【标准寻访】</>中获得6星干员的概率将恢复到<@ga.percent>2%</>。",
+                },
+            ]
+
+        self.response["detailInfo"]["gachaObjList"] = gacha_obj_list
+
+
 def get_advanced_gacha_manager(player_data, request_json, response):
     pool_id = request_json["poolId"]
     gacha_type = pool_id_gacha_type_dict[pool_id]
@@ -1245,6 +1392,10 @@ def get_advanced_gacha_manager(player_data, request_json, response):
         )
     if gacha_type == "limit":
         return AdvancedGachaLimitedManager(
+            player_data, request_json, response, pool_id, gacha_type
+        )
+    if gacha_type == "normal":
+        return AdvancedGachaNormalManager(
             player_data, request_json, response, pool_id, gacha_type
         )
     return AdvancedGachaSimpleManager(

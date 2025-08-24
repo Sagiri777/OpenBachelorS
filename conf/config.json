@@ -8,5 +8,6 @@
     "redirect_asset": false,
     "debug": true,
     "mod": false,
-    "assist_ext": true
+    "assist_ext": true,
+    "faketime": -1
 }

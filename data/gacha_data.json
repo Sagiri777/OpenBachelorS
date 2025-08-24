@@ -418,6 +418,30 @@
             "total_percent": 0.4
         }
     },
+    "override_avail_char_info": {
+        "NORM_64_0_3": {
+            "TIER_6": {
+                "char_id_lst": [
+                    "char_4146_nymph",
+                    "char_1040_blaze2",
+                    "char_4087_ines",
+                    "char_4010_etlchi"
+                ],
+                "total_percent": 0.02
+            },
+            "TIER_5": {
+                "char_id_lst": [
+                    "char_4178_alanna",
+                    "char_1024_hbisc2",
+                    "char_4187_graceb",
+                    "char_4006_melnte",
+                    "char_4147_mitm",
+                    "char_4040_rockr"
+                ],
+                "total_percent": 0.08
+            }
+        }
+    },
     "up_char_info": {
         "DOUBLE_61_0_5": {
             "TIER_6": {
