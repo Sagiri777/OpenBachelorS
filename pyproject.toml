@@ -6,8 +6,6 @@ authors = [{ name = "Your Name", email = "you@example.com" }]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "flask (>=3.1.1,<4.0.0)",
-    "waitress (>=3.0.2,<4.0.0)",
     "pathvalidate (>=3.3.1,<4.0.0)",
     "requests (>=2.32.4,<3.0.0)",
     "pycryptodome (>=3.23.0,<4.0.0)",
