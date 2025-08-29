@@ -344,6 +344,95 @@
                     }
                 },
                 "globalBan": false
+            },
+            "act2enemyduel": {
+                "milestone": {
+                    "point": 6300,
+                    "got": [
+                        "mileStone_1",
+                        "mileStone_10",
+                        "mileStone_11",
+                        "mileStone_12",
+                        "mileStone_13",
+                        "mileStone_14",
+                        "mileStone_15",
+                        "mileStone_16",
+                        "mileStone_17",
+                        "mileStone_18",
+                        "mileStone_19",
+                        "mileStone_2",
+                        "mileStone_20",
+                        "mileStone_21",
+                        "mileStone_22",
+                        "mileStone_23",
+                        "mileStone_24",
+                        "mileStone_25",
+                        "mileStone_26",
+                        "mileStone_27",
+                        "mileStone_28",
+                        "mileStone_29",
+                        "mileStone_3",
+                        "mileStone_30",
+                        "mileStone_31",
+                        "mileStone_32",
+                        "mileStone_33",
+                        "mileStone_34",
+                        "mileStone_35",
+                        "mileStone_36",
+                        "mileStone_37",
+                        "mileStone_38",
+                        "mileStone_39",
+                        "mileStone_4",
+                        "mileStone_40",
+                        "mileStone_41",
+                        "mileStone_42",
+                        "mileStone_43",
+                        "mileStone_44",
+                        "mileStone_45",
+                        "mileStone_46",
+                        "mileStone_47",
+                        "mileStone_48",
+                        "mileStone_49",
+                        "mileStone_5",
+                        "mileStone_50",
+                        "mileStone_6",
+                        "mileStone_7",
+                        "mileStone_8",
+                        "mileStone_9"
+                    ]
+                },
+                "dailyMission": {
+                    "process": 0,
+                    "state": 0
+                },
+                "modeInfo": {
+                    "soloOperation": {
+                        "highScore": 262900,
+                        "curStage": "act2enemyduel_01a",
+                        "isUnlock": true
+                    },
+                    "multiOperationMatch": {
+                        "highScore": 262900,
+                        "curStage": "act2enemyduel_01a",
+                        "isUnlock": true
+                    },
+                    "multiStandMatch": {
+                        "highScore": 1,
+                        "curStage": "act2enemyduel_01a",
+                        "isUnlock": true
+                    },
+                    "multiOperationRoom": {
+                        "highScore": 0,
+                        "curStage": "act2enemyduel_01a",
+                        "isUnlock": true
+                    },
+                    "multiStandRoom": {
+                        "highScore": 0,
+                        "curStage": "act2enemyduel_01a",
+                        "isUnlock": true
+                    }
+                },
+                "globalBan": false
             }
         },
         "VEC_BREAK_V2": {
@@ -4594,6 +4683,123 @@
             "emoticon_originium_slug",
             "emticon_duel_basic"
         ]
+    },
+    "recalRune": {
+        "seasons": {
+            "recalRune_season_1": {
+                "stage": {
+                    "level_recalrune_01-01": {
+                        "state": 1,
+                        "record": 25,
+                        "runes": [
+                            "base",
+                            "enemy_leveltype_attribute_a",
+                            "enemy_leveltype_attribute_b",
+                            "enemy_patrt_5",
+                            "enemy_sotidm_3",
+                            "enemy_movespeed_2",
+                            "char_cost_2",
+                            "char_highp_2",
+                            "enemy_sotiab_2",
+                            "enemy_sotiab_3",
+                            "enemy_dpshld_a_3",
+                            "enemy_dpshld_b_3",
+                            "char_groatk_2",
+                            "char_groatk_3",
+                            "char_exclude_guard_2",
+                            "char_exclude_medic_2",
+                            "char_exclude_special_2"
+                        ]
+                    },
+                    "level_recalrune_01-02": {
+                        "state": 1,
+                        "record": 25,
+                        "runes": [
+                            "base",
+                            "char_exclude_highland",
+                            "char_exclude_ground",
+                            "char_exclude_vansni_2",
+                            "enemy_replace_ghost_3",
+                            "enemy_replace_yokai_3",
+                            "enemy_replace_laxe_2",
+                            "enemy_replace_litamr_2",
+                            "enemy_movespeed_2",
+                            "enemy_maxhp_2",
+                            "enemy_maxhp_3",
+                            "enemy_slime_repbsl_3",
+                            "enemy_slime_attr_3",
+                            "hidden_def_2",
+                            "hidden_magicresistance_2",
+                            "enemy_bhrknf_2",
+                            "enemy_bhrknf_3"
+                        ]
+                    },
+                    "level_recalrune_01-03": {
+                        "state": 1,
+                        "record": 25,
+                        "runes": [
+                            "base",
+                            "token_build_a",
+                            "token_build_b",
+                            "enemy_speed_a",
+                            "enemy_speed_b",
+                            "enemy_silenceImmue_a",
+                            "enemy_silenceImmue_b",
+                            "emppnt_level_up_2",
+                            "airforce_frost_2",
+                            "airforce_lazerd_2",
+                            "char_respawntime_2",
+                            "tyokai_immue_3",
+                            "tyokai_fightback_3",
+                            "enemy_attri_base_2",
+                            "enemy_attri_atk_2",
+                            "global_magic_resist_2",
+                            "defdrn_up_2",
+                            "emppnt_more_2",
+                            "lunmag_strong_2",
+                            "global_costrecovery_2",
+                            "global_costrecovery_3",
+                            "global_squadnum_2",
+                            "global_pcharnum_3",
+                            "char_exclude_tavasn_2",
+                            "char_exclude_tavasn_3",
+                            "char_exclude_spwime_2",
+                            "char_exclude_spwime_3"
+                        ]
+                    },
+                    "level_recalrune_01-04": {
+                        "state": 1,
+                        "record": 25,
+                        "runes": [
+                            "base",
+                            "enemy_dufrbl_a",
+                            "enemy_dufrbl_b",
+                            "enemy_global_b",
+                            "enemy_global_a",
+                            "enemy_duholydushdo_a_3",
+                            "enemy_duholydushdo_b_3",
+                            "enemy_duphlx_b_2",
+                            "enemy_movespeed_2",
+                            "enemy_hiddengroup_b_2",
+                            "trap_dupilr_2",
+                            "map_forbid_a_2",
+                            "enemy_atk_2",
+                            "enemy_atk_3",
+                            "enemy_duspfr_a_3",
+                            "enemy_duspfr_b_3",
+                            "char_exclude_medsip_2",
+                            "char_exclude_medsip_3",
+                            "char_exclude_magshel_2",
+                            "char_exclude_magshel_3"
+                        ]
+                    }
+                },
+                "reward": {
+                    "junior": 1,
+                    "senior": 1
+                }
+            }
+        }
     },
     "storyreview": {
         "groups": {},

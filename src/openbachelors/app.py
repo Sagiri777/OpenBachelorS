@@ -38,6 +38,7 @@ from .bp import (
     bp_mail,
     bp_pay,
     bp_quest,
+    bp_recalRune,
     bp_rlv2,
     bp_sandboxPerm,
     bp_settings,
@@ -89,6 +90,7 @@ app.include_router(bp_general.router)
 app.include_router(bp_mail.router)
 app.include_router(bp_pay.router)
 app.include_router(bp_quest.router)
+app.include_router(bp_recalRune.router)
 app.include_router(bp_rlv2.router)
 app.include_router(bp_sandboxPerm.router)
 app.include_router(bp_settings.router)
