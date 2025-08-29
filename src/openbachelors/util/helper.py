@@ -53,7 +53,10 @@ def get_char_id_from_skin_id(skin_id: str) -> str:
 
 
 def get_username_by_token(token: str) -> str:
-    return urlsafe_b64encode(token.encode()).decode()[:64]
+    if token != "1":
+        return urlsafe_b64encode(token.encode()).decode()[:64]
+    elif token == "1":
+        return "雪村葵"
 
 
 def encode_stage_id(stage_id: str) -> str:
@@ -148,37 +151,63 @@ async def save_delta_json_obj(path: str, modified: dict, deleted: dict):
 
 
 async def download_file(url: str, filename: str, dirpath: str):
+    import httpx
+    
     os.makedirs(TMP_DIRPATH, exist_ok=True)
-
     tmp_filename = str(uuid4())
     
-    # 根据操作系统选择合适的aria2c可执行文件
-    if platform.system() == "Windows":
-        aria2c_cmd = "aria2c.exe"
-    else:  # macOS, Linux等Unix系统
-        aria2c_cmd = "aria2c"
-    
-    proc = await asyncio.to_thread(
-        lambda: subprocess.run(
-            [
-                aria2c_cmd,
-                "-q",
-                "-d",
-                TMP_DIRPATH,
-                "-o",
-                tmp_filename,
-                "--auto-file-renaming=false",
-                url,
-            ]
+    # 首先尝试使用 aria2c 下载
+    try:
+        # 根据操作系统选择合适的aria2c可执行文件
+        if platform.system() == "Windows":
+            aria2c_cmd = "aria2c.exe"
+        else:  # macOS, Linux等Unix系统
+            aria2c_cmd = "aria2c"
+        
+        proc = await asyncio.to_thread(
+            lambda: subprocess.run(
+                [
+                    aria2c_cmd,
+                    "-q",
+                    "-d",
+                    TMP_DIRPATH,
+                    "-o",
+                    tmp_filename,
+                    "--auto-file-renaming=false",
+                    "--connect-timeout=30",
+                    "--timeout=60",
+                    url,
+                ],
+                capture_output=True,
+                text=True
+            )
         )
-    )
-
-    if proc.returncode:
-        raise ConnectionError(f"download_file: file {filename} failed")
-
-    os.makedirs(dirpath, exist_ok=True)
-
-    os.replace(os.path.join(TMP_DIRPATH, tmp_filename), os.path.join(dirpath, filename))
+        
+        if proc.returncode == 0:
+            # aria2c 下载成功
+            os.makedirs(dirpath, exist_ok=True)
+            os.replace(os.path.join(TMP_DIRPATH, tmp_filename), os.path.join(dirpath, filename))
+            return
+        else:
+            print(f"aria2c failed with return code {proc.returncode}: {proc.stderr}")
+    
+    except Exception as e:
+        print(f"aria2c download failed: {e}")
+    
+    # aria2c 失败，使用 httpx 作为备用方案
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.get(url)
+            response.raise_for_status()
+            
+            os.makedirs(dirpath, exist_ok=True)
+            filepath = os.path.join(dirpath, filename)
+            
+            async with aiofiles.open(filepath, 'wb') as f:
+                await f.write(response.content)
+                
+    except Exception as e:
+        raise ConnectionError(f"download_file: file {filename} failed - {str(e)}")
 
 
 def is_valid_res_version(res_version: str) -> bool:

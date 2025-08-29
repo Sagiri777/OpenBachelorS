@@ -30,11 +30,11 @@ async def user_info_v1_basic(request: Request):
     username = get_username_by_token(token)
     response = {
         "data": {
-            "hgId": "123456789",
+            "hgId": "888888888",
             "phone": username,
             "email": null,
-            "identityNum": "123456789",
-            "identityName": "123456789",
+            "identityNum": "888888888",
+            "identityName": "888888888",
             "isMinor": false,
             "isLatestUserAgreement": true,
         },
@@ -52,7 +52,7 @@ async def user_oauth2_v2_grant(request: Request):
     token = request_json["token"]
 
     response = {
-        "data": {"uid": "123456789", "code": token},
+        "data": {"uid": "888888888", "code": token},
         "msg": "OK",
         "status": 0,
         "type": "A",
@@ -133,11 +133,11 @@ async def user_login(request: Request):
             "IsTestAccount": false,
             "Keys": [
                 {
-                    "ID": "123456789",
+                    "ID": "888888888",
                     "Type": "yostar",
-                    "Key": "123456789",
+                    "Key": "888888888",
                     "NickName": username,
-                    "CreatedAt": 1700000000,
+                    "CreatedAt": 1000000000,
                 }
             ],
             "ServerNowAt": 1700000000,
