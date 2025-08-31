@@ -1031,17 +1031,18 @@ class DBSaveAggregator:
 
 
 class PlayerData(OverlayJson, SavableThing):
+    DEFAULT_TOKEN = "_"
+
     @classmethod
     async def create(cls, player_id=None, request=None):
         if request is not None:
-            token = request.headers.get("secret", "")
+            token = request.headers.get("secret", cls.DEFAULT_TOKEN)
         else:
             if player_id is not None:
                 token = player_id
             else:
-                token = ""
-        if not token:
-            token = "_"
+                token = cls.DEFAULT_TOKEN
+
         username = get_username_by_token(token)
 
         config = const_json_loader[CONFIG_JSON]

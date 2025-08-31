@@ -60,7 +60,7 @@ async def businessCard_getOtherPlayerNameCard(player_data, request: Request):
             "medalBoard": {"type": "EMPTY", "custom": null, "template": null},
             "nameCardStyle": {
                 "componentOrder": ["module_sign", "module_assist", "module_medal"],
-                "skin": {"selected": "nc_rhodes_default", "state": {}},
+                "skin": {"selected": "nc_rhodes_default", "state": {}, "tmpl": {}},
                 "misc": {"showDetail": true, "showBirthday": false},
             },
         }

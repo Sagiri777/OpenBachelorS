@@ -156,7 +156,7 @@ async def user_login(request: Request):
             "Yostar": {
                 "ID": "123456789",
                 "Country": "US",
-                "Nickname": "123456789",
+                "Nickname": "Bachelor",
                 "Picture": "",
                 "State": 1,
                 "AgreeAd": 0,

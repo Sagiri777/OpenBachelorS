@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 from copy import deepcopy
 from abc import ABC, abstractmethod
+from functools import wraps
 
 
 class SavableThing(ABC):
@@ -70,6 +71,17 @@ class ConstJson(ConstJsonLike):
         return deepcopy(self.json_obj)
 
 
+def lazy_loaded_const_json_decorator(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if not self.loaded:
+            self.load_json_obj()
+
+        return func(self, *args, **kwargs)
+
+    return wrapper
+
+
 class LazyLoadedConstJson(ConstJson):
     def __init__(self, filepath):
         self.filepath = filepath
@@ -79,38 +91,27 @@ class LazyLoadedConstJson(ConstJson):
         with open(self.filepath, encoding="utf-8") as f:
             json_obj = json.load(f)
 
-        self.json_obj = json_obj
+        super().__init__(json_obj)
         self.loaded = True
-        self.is_dict = isinstance(json_obj, dict)
 
+    @lazy_loaded_const_json_decorator
     def __contains__(self, key):
-        if not self.loaded:
-            self.load_json_obj()
-
         return super().__contains__(key)
 
+    @lazy_loaded_const_json_decorator
     def __getitem__(self, key):
-        if not self.loaded:
-            self.load_json_obj()
-
         return super().__getitem__(key)
 
+    @lazy_loaded_const_json_decorator
     def __iter__(self):
-        if not self.loaded:
-            self.load_json_obj()
-
         return super().__iter__()
 
+    @lazy_loaded_const_json_decorator
     def __len__(self):
-        if not self.loaded:
-            self.load_json_obj()
-
         return super().__len__()
 
+    @lazy_loaded_const_json_decorator
     def copy(self):
-        if not self.loaded:
-            self.load_json_obj()
-
         return super().copy()
 
 

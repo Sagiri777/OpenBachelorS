@@ -9,5 +9,6 @@
     "debug": true,
     "mod": false,
     "assist_ext": true,
-    "faketime": -1
+    "faketime": -1,
+    "multiplayer_addr": "127.0.0.1:8543"
 }

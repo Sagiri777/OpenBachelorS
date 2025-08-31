@@ -201,23 +201,30 @@ async def activity_enemyDuel_singleBattleStart(player_data, request: Request):
 async def activity_enemyDuel_singleBattleFinish(player_data, request: Request):
     request_json = await request.json()
 
-    log_battle_log_if_necessary(player_data, request_json["data"])
+    log_battle_log_if_necessary(player_data, request_json["activityId"])
+
+    activity_id = request_json["activityId"]
+    activity_table = const_json_loader[ACTIVITY_TABLE]
+
+    rank_lst = [
+        {"id": "1", "rank": 1, "score": 262900, "isPlayer": 1},
+    ]
+
+    for npc_id, npc_obj in activity_table["activity"]["ENEMY_DUEL"][activity_id][
+        "npcData"
+    ]:
+        if len(rank_lst) >= 8:
+            break
+        rank_lst.append(
+            {"id": npc_id, "rank": 2, "score": 0, "isPlayer": 0},
+        )
 
     response = {
         "result": 0,
         "choiceCnt": {"skip": 0, "normal": 5, "allIn": 5},
         "commentId": "Comment_Operation_1",
         "isHighScore": false,
-        "rankList": [
-            {"id": "1", "rank": 1, "score": 262900, "isPlayer": 1},
-            {"id": "act1enemyduel_npc_01", "rank": 2, "score": 0, "isPlayer": 0},
-            {"id": "act1enemyduel_npc_02", "rank": 2, "score": 0, "isPlayer": 0},
-            {"id": "act1enemyduel_npc_03", "rank": 2, "score": 0, "isPlayer": 0},
-            {"id": "act1enemyduel_npc_04", "rank": 2, "score": 0, "isPlayer": 0},
-            {"id": "act1enemyduel_npc_05", "rank": 2, "score": 0, "isPlayer": 0},
-            {"id": "act1enemyduel_npc_06", "rank": 2, "score": 0, "isPlayer": 0},
-            {"id": "act1enemyduel_npc_07", "rank": 2, "score": 0, "isPlayer": 0},
-        ],
+        "rankList": rank_lst,
         "bp": 0,
         "dailyMission": {"add": 0, "reward": 0},
     }
@@ -419,4 +426,97 @@ async def activity_bossRush_relicSelect(player_data, request: Request):
     ] = request_json["relicId"]
 
     response = {}
+    return response
+
+
+@router.post("/activity/enemyDuel/startMatch")
+@player_data_decorator
+async def activity_enemyDuel_startMatch(player_data, request: Request):
+    request_json = await request.json()
+
+    player_data.extra_save.save_obj["enemyDuel_activityId"] = request_json["activityId"]
+    player_data.extra_save.save_obj["enemyDuel_modeId"] = request_json["modeId"]
+
+    response = {
+        "result": 0,
+    }
+    return response
+
+
+@router.post("/activity/enemyDuel/queryMatch")
+@player_data_decorator
+async def activity_enemyDuel_queryMatch(player_data, request: Request):
+    request_json = await request.json()
+
+    if request_json["needLeave"]:
+        response = {
+            "result": 1,
+            "team": null,
+        }
+    else:
+        multiplayer_addr = const_json_loader[CONFIG_JSON]["multiplayer_addr"]
+        response = {
+            "result": 0,
+            "team": {
+                "teamId": "some_team_id",
+                "serverAddress": multiplayer_addr,
+                "serverToken": "some_server_token",
+            },
+            "playerCnt": 8,
+        }
+    return response
+
+
+@router.post("/activity/enemyDuel/multiBattleStart")
+@player_data_decorator
+async def activity_enemyDuel_multiBattleStart(player_data, request: Request):
+    request_json = await request.json()
+
+    response = {
+        "result": 0,
+    }
+    return response
+
+
+@router.post("/activity/enemyDuel/multiBattleFinish")
+@player_data_decorator
+async def activity_enemyDuel_multiBattleFinish(player_data, request: Request):
+    request_json = await request.json()
+
+    response = {
+        "result": 0,
+        "choiceCnt": {"skip": 0, "normal": 5, "allIn": 5},
+        "commentId": "Comment_Operation_1",
+        "isHighScore": false,
+        "rankList": [
+            {"id": "1", "rank": 1, "score": 262900, "isPlayer": 1},
+            {
+                "id": "100",
+                "rank": 2,
+                "score": 0,
+                "isPlayer": 1,
+                "playerBrief": {
+                    "nickName": "Undergraduate",
+                    "uid": "100",
+                    "avatar": {"type": "ICON", "id": "avatar_def_01"},
+                    "nickNumber": "1234",
+                    "nameCardStyle": {
+                        "componentOrder": [
+                            "module_sign",
+                            "module_assist",
+                            "module_medal",
+                        ],
+                        "skin": {
+                            "selected": "nc_rhodes_default",
+                            "state": {},
+                            "tmpl": {},
+                        },
+                        "misc": {"showDetail": true, "showBirthday": false},
+                    },
+                },
+            },
+        ],
+        "bp": 0,
+        "dailyMission": {"add": 0, "reward": 0},
+    }
     return response

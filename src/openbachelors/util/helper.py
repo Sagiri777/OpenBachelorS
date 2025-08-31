@@ -31,6 +31,7 @@ import re
 from hashlib import md5
 import random
 import asyncio
+import urllib.parse
 
 from pathvalidate import is_valid_filename
 from Crypto.Cipher import AES
@@ -52,19 +53,23 @@ def get_char_id_from_skin_id(skin_id: str) -> str:
     return skin_id.partition("@")[0].partition("#")[0]
 
 
+MAX_USERNAME_LENGTH = 64
+
+
 def get_username_by_token(token: str) -> str:
+  
     if token != "1":
-        return urlsafe_b64encode(token.encode()).decode()[:64]
+        return urllib.parse.quote(token)[:MAX_USERNAME_LENGTH]
     elif token == "1":
         return "雪村葵"
 
 
 def encode_stage_id(stage_id: str) -> str:
-    return urlsafe_b64encode(stage_id.encode()).decode()
+    return urllib.parse.unquote(stage_id)
 
 
 def decode_stage_id(stage_id: str) -> str:
-    return urlsafe_b64decode(stage_id.encode()).decode()
+    return urllib.parse.unquote(stage_id)
 
 
 def encode_battle_replay(decoded_battle_replay: dict) -> str:
