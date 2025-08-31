@@ -59,11 +59,17 @@ async def shop_getLowGoodList(player_data, request: Request):
 @player_data_decorator
 async def shop_getHighGoodList(player_data, request: Request):
     request_json = await request.json()
-    response = {
-        "goodList": [],
-        "progressGoodList": {},
-        "newFlag": [],
-    }
+    # 从data/shop/HighGoods/HighGoodList.json读取数据
+    try:
+        import json
+        with open('data/shop/HighGoods/HighGoodList.json', 'r', encoding='utf-8') as f:
+            response = json.load(f)
+    except FileNotFoundError:
+        response = {
+            "goodList": [],
+            "progressGoodList": {},
+            "newFlag": [],
+        }
     return response
 
 
