@@ -155,6 +155,22 @@ async def save_delta_json_obj(path: str, modified: dict, deleted: dict):
         return await f.write(json.dumps(json_obj, indent=4, ensure_ascii=False))
 
 
+def remove_aria2_tmpfile(tmp_filename):
+    tmp_filepath = os.path.join(TMP_DIRPATH, tmp_filename)
+
+    try:
+        os.remove(tmp_filepath)
+    except Exception:
+        pass
+
+    aria2_tmp_filepath = f"{tmp_filepath}.aria2"
+
+    try:
+        os.remove(aria2_tmp_filepath)
+    except Exception:
+        pass
+
+
 async def download_file(url: str, filename: str, dirpath: str):
     import httpx
     
@@ -187,8 +203,11 @@ async def download_file(url: str, filename: str, dirpath: str):
                 text=True
             )
         )
-        
-        if proc.returncode == 0:
+
+        if proc.returncode:
+            remove_aria2_tmpfile(tmp_filename)
+            raise ConnectionError(f"download_file: file {filename} failed")
+        elif proc.returncode == 0:
             # aria2c 下载成功
             os.makedirs(dirpath, exist_ok=True)
             os.replace(os.path.join(TMP_DIRPATH, tmp_filename), os.path.join(dirpath, filename))
