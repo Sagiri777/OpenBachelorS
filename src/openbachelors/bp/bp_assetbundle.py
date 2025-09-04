@@ -56,6 +56,37 @@ DownloadAssetResultType = (
 )
 
 
+async def try_mod_result(res_version, asset_filename, src_res_version):
+    if mod_loader.hot_update_list is None:
+        await download_asset(src_res_version, HOT_UPDATE_LIST_JSON)
+        async with aiofiles.open(
+            os.path.join(ASSET_DIRPATH, src_res_version, HOT_UPDATE_LIST_JSON),
+            encoding="utf-8",
+        ) as f:
+            src_hot_update_list = json.loads(await f.read())
+        mod_loader.build_hot_update_list(src_hot_update_list)
+    if asset_filename == HOT_UPDATE_LIST_JSON:
+        hot_update_list = mod_loader.hot_update_list.copy()
+        hot_update_list["versionId"] = res_version
+        if IS_DEBUG:
+            os.makedirs(TMP_DIRPATH, exist_ok=True)
+            async with aiofiles.open(
+                os.path.join(TMP_DIRPATH, HOT_UPDATE_LIST_JSON),
+                "w",
+                encoding="utf-8",
+            ) as f:
+                await f.write(json.dumps(hot_update_list, ensure_ascii=False, indent=4))
+        return DownloadAssetResult.Response(response=hot_update_list)
+
+    mod_filename = mod_loader.get_mod_filename_by_asset_filename(asset_filename)
+    if mod_filename is not None:
+        mod_filepath = os.path.join(MOD_DIRPATH, mod_filename)
+        mod_abs_filepath = os.path.abspath(mod_filepath)
+        return DownloadAssetResult.SendFile(file_path=mod_abs_filepath)
+
+    return None
+
+
 async def download_asset(res_version, asset_filename):
     if not is_valid_res_version(res_version) or not is_valid_asset_filename(
         asset_filename
@@ -64,34 +95,10 @@ async def download_asset(res_version, asset_filename):
 
     src_res_version = const_json_loader[VERSION_JSON]["version"]["resVersion"]
     if const_json_loader[CONFIG_JSON]["mod"] and res_version != src_res_version:
-        if mod_loader.hot_update_list is None:
-            await download_asset(src_res_version, HOT_UPDATE_LIST_JSON)
-            async with aiofiles.open(
-                os.path.join(ASSET_DIRPATH, src_res_version, HOT_UPDATE_LIST_JSON),
-                encoding="utf-8",
-            ) as f:
-                src_hot_update_list = json.loads(await f.read())
-            mod_loader.build_hot_update_list(src_hot_update_list)
-        if asset_filename == HOT_UPDATE_LIST_JSON:
-            hot_update_list = mod_loader.hot_update_list.copy()
-            hot_update_list["versionId"] = res_version
-            if IS_DEBUG:
-                os.makedirs(TMP_DIRPATH, exist_ok=True)
-                async with aiofiles.open(
-                    os.path.join(TMP_DIRPATH, HOT_UPDATE_LIST_JSON),
-                    "w",
-                    encoding="utf-8",
-                ) as f:
-                    await f.write(
-                        json.dumps(hot_update_list, ensure_ascii=False, indent=4)
-                    )
-            return DownloadAssetResult.Response(response=hot_update_list)
+        mod_result = try_mod_result(res_version, asset_filename, src_res_version)
 
-        mod_filename = mod_loader.get_mod_filename_by_asset_filename(asset_filename)
-        if mod_filename is not None:
-            mod_filepath = os.path.join(MOD_DIRPATH, mod_filename)
-            mod_abs_filepath = os.path.abspath(mod_filepath)
-            return DownloadAssetResult.SendFile(file_path=mod_abs_filepath)
+        if mod_result is not None:
+            return mod_result
 
         # not found in mod, fall back to src res version
         res_version = src_res_version

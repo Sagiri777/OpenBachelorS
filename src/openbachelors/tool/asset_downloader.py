@@ -42,8 +42,20 @@ async def async_asset_download_worker_func(worker_param):
     return None
 
 
+asset_download_worker_loop = None
+
+
+def init_asset_download_worker():
+    global asset_download_worker_loop
+
+    asset_download_worker_loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(asset_download_worker_loop)
+
+
 def asset_download_worker_func(worker_param):
-    return asyncio.run(async_asset_download_worker_func(worker_param))
+    return asset_download_worker_loop.run_until_complete(
+        async_asset_download_worker_func(worker_param)
+    )
 
 
 def main():
@@ -87,7 +99,10 @@ def main():
     ret_val_lst = []
 
     try:
-        with ProcessPoolExecutor(NUM_ASSET_DOWNLOAD_WORKER) as pool:
+        with ProcessPoolExecutor(
+            NUM_ASSET_DOWNLOAD_WORKER,
+            initializer=init_asset_download_worker,
+        ) as pool:
             for asset_filename in asset_filename_lst:
                 future_lst.append(
                     pool.submit(

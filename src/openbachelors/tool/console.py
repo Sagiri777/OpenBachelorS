@@ -19,6 +19,8 @@ def become_sync(f):
     def wrapper(*args, **kwargs):
         asyncio.run(f(*args, **kwargs))
 
+    wrapper.async_func = f
+
     return wrapper
 
 
