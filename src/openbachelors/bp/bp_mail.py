@@ -15,6 +15,8 @@ router = APIRouter()
 async def mail_getMetaInfoList(player_data, request: Request):
     request_json = await request.json()
 
+    print("meta",request_json)
+
     mail_json_obj, pending_mail_set = get_player_mailbox(player_data)
 
     result_lst = []
@@ -33,6 +35,7 @@ async def mail_getMetaInfoList(player_data, request: Request):
     player_data["pushFlags"]["hasGifts"] = int(bool(pending_mail_set))
 
     response = {"result": result_lst}
+    print(response)
     return response
 
 
@@ -40,6 +43,8 @@ async def mail_getMetaInfoList(player_data, request: Request):
 @player_data_decorator
 async def mail_listMailBox(player_data, request: Request):
     request_json = await request.json()
+
+    print(request_json)
 
     mail_json_obj, pending_mail_set = get_player_mailbox(player_data)
 
