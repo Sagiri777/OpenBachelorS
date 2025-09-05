@@ -521,6 +521,21 @@
                 ],
                 "percent": 0.5
             }
+        },
+        "LINKAGE_65_0_1": {
+            "TIER_6": {
+                "char_id_lst": [
+                    "char_4182_oblvns"
+                ],
+                "percent": 0.5
+            },
+            "TIER_5": {
+                "char_id_lst": [
+                    "char_4184_dolris",
+                    "char_4183_mortis"
+                ],
+                "percent": 0.25
+            }
         }
     },
     "limit_info": {

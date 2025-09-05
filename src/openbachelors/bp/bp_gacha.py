@@ -1375,6 +1375,197 @@ class AdvancedGachaNormalManager(AdvancedGachaSimpleManager):
         self.response["detailInfo"]["gachaObjList"] = gacha_obj_list
 
 
+class AdvancedGachaLinkageManager(AdvancedGachaSimpleManager):
+    def __init__(self, player_data, request_json, response, pool_id, gacha_type):
+        super().__init__(player_data, request_json, response, pool_id, gacha_type)
+
+        up_char_info = self.get_up_char_info()
+
+        self.is_valid_pool = True
+        if (
+            CharRarityRank.TIER_6.name not in up_char_info
+            or len(up_char_info[CharRarityRank.TIER_6.name]["char_id_lst"]) != 1
+        ):
+            self.is_valid_pool = False
+
+        if not self.is_valid_pool:
+            logger.warning(f"linkage pool {self.pool_id} misconfigured")
+
+        if self.is_valid_pool:
+            self.linkage_char_id = up_char_info[CharRarityRank.TIER_6.name][
+                "char_id_lst"
+            ][0]
+
+            if CharRarityRank.TIER_5.name in up_char_info:
+                self.linkage_tier_5_char_id_lst = up_char_info[
+                    CharRarityRank.TIER_5.name
+                ]["char_id_lst"].copy()
+            else:
+                self.linkage_tier_5_char_id_lst = []
+
+    def get_basic_tier_6_pity_key(self):
+        return f"advanced_gacha_linkage_basic_tier_6_pity_{self.pool_id}"
+
+    def get_linkage_pity_key(self):
+        return f"advanced_gacha_linkage_pity_{self.pool_id}"
+
+    def get_linkage_pity(self):
+        linkage_pity_key = self.get_linkage_pity_key()
+
+        return self.player_data.extra_save.save_obj.get(linkage_pity_key, False)
+
+    def set_linkage_pity(self):
+        linkage_pity_key = self.get_linkage_pity_key()
+
+        self.player_data.extra_save.save_obj[linkage_pity_key] = True
+
+    def get_linkage_tier_5_pity_key(self):
+        return f"advanced_gacha_linkage_tier_5_pity_{self.pool_id}"
+
+    def get_linkage_tier_5_pity(self):
+        linkage_tier_5_pity_key = self.get_linkage_tier_5_pity_key()
+
+        return self.player_data.extra_save.save_obj.get(linkage_tier_5_pity_key, False)
+
+    def set_linkage_tier_5_pity(self):
+        linkage_tier_5_pity_key = self.get_linkage_tier_5_pity_key()
+
+        self.player_data.extra_save.save_obj[linkage_tier_5_pity_key] = True
+
+    def try_get_linkage_tier_5_char_id(self):
+        if self.pool_id not in self.player_data["gacha"]["linkage"]:
+            return None
+
+        if not self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+            "next5"
+        ]:
+            return None
+
+        return self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+            "next5Char"
+        ]
+
+    def post_gacha_override(self, char_rarity_rank, char_id):
+        char_rarity_rank, char_id = super().post_gacha_override(
+            char_rarity_rank, char_id
+        )
+
+        if not self.is_valid_pool:
+            return char_rarity_rank, char_id
+
+        linkage_pity = self.get_linkage_pity()
+        gacha_num = self.get_gacha_num()
+
+        if not linkage_pity and gacha_num + 1 == 120:
+            char_rarity_rank = CharRarityRank.TIER_6
+            char_id = self.linkage_char_id
+            return char_rarity_rank, char_id
+
+        if char_rarity_rank == CharRarityRank.TIER_5:
+            linkage_tier_5_char_id = self.try_get_linkage_tier_5_char_id()
+            if linkage_tier_5_char_id:
+                char_id = linkage_tier_5_char_id
+                return char_rarity_rank, char_id
+
+        return char_rarity_rank, char_id
+
+    def post_gacha_operations(self, char_rarity_rank, char_id):
+        super().post_gacha_operations(char_rarity_rank, char_id)
+
+        if not self.is_valid_pool:
+            return
+
+        if self.pool_id not in self.player_data["gacha"]["linkage"]:
+            self.player_data["gacha"]["linkage"][self.pool_id] = {
+                "LINKAGE_R6_01": {
+                    "next5": false,
+                    "next5Char": "",
+                    "must6": true,
+                    "must6Char": self.linkage_char_id,
+                    "must6Count": 120,
+                    "must6Level": 5,
+                },
+            }
+
+        if char_id == self.linkage_char_id:
+            self.set_linkage_pity()
+
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "must6"
+            ] = false
+
+        if (
+            not self.get_linkage_tier_5_pity()
+            and char_id in self.linkage_tier_5_char_id_lst
+            and len(self.linkage_tier_5_char_id_lst) > 1
+        ):
+            self.set_linkage_tier_5_pity()
+
+            for next_char_id in self.linkage_tier_5_char_id_lst:
+                if next_char_id != char_id:
+                    break
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "next5"
+            ] = true
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "next5Char"
+            ] = next_char_id
+
+        linkage_tier_5_char_id = self.try_get_linkage_tier_5_char_id()
+        if char_id == linkage_tier_5_char_id:
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "next5"
+            ] = false
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "next5Char"
+            ] = ""
+
+        gacha_num = self.get_gacha_num()
+
+        if self.get_linkage_pity():
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "must6Count"
+            ] = 0
+        else:
+            self.player_data["gacha"]["linkage"][self.pool_id]["LINKAGE_R6_01"][
+                "must6Count"
+            ] = 120 - gacha_num
+
+    def gacha_getPoolDetail(self):
+        super().gacha_getPoolDetail()
+
+        self.response["detailInfo"]["gachaObjList"] = [
+            {"gachaObject": "TEXT", "type": 0, "imageType": 0, "param": "卡池干员列表"},
+            {
+                "gachaObject": "RATE_UP_6",
+                "type": 0,
+                "imageType": 0,
+                "param": "梦中舞会人偶寻访",
+            },
+            {"gachaObject": "TEXT", "type": 2, "imageType": 0, "param": "出现概率上升"},
+            {"gachaObject": "UP_CHAR", "type": 0, "imageType": 0, "param": null},
+            {
+                "gachaObject": "TEXT",
+                "type": 1,
+                "imageType": 0,
+                "param": "全部可能出现的干员",
+            },
+            {"gachaObject": "AVAIL_CHAR", "type": 0, "imageType": 0, "param": null},
+            {
+                "gachaObject": "TEXT",
+                "type": 0,
+                "imageType": 0,
+                "param": "该寻访为【梦中舞会人偶寻访】",
+            },
+            {
+                "gachaObject": "TEXT",
+                "type": 5,
+                "imageType": 0,
+                "param": "在<@linkageGa.title>【梦中舞会人偶寻访】</>中前<@limtedGa.percent>120</>次寻访必定能够获得干员<@linkageGa.charName>【丰川祥子】</>，仅限一次。\n在<@linkageGa.title>【梦中舞会人偶寻访】</>中首次获得任意一名当期概率上升的5星干员后，下一次获得5星干员时必定是另一名当期概率上升的5星干员，仅限一次。\n在<@linkageGa.title>【梦中舞会人偶寻访】</>中，如果连续<@limtedGa.percent>50</>次没有获得6星干员，则下一次获得6星干员的概率将从原本的<@limtedGa.percent>2%</>提升至<@limtedGa.percent>4%</>，如果该次还没有寻访到6星干员，则下一次寻访获得6星的概率由<@limtedGa.percent>4%</>提升到<@limtedGa.percent>6%</>。依此类推，每次提高<@limtedGa.percent>2%</>获得6星干员的概率，直至达到<@limtedGa.percent>100%</>时必定获得6星干员。\n在<@linkageGa.title>【梦中舞会人偶寻访】</>中没有获得6星干员的累计次数不会累计到其他任意寻访，该次数会因为<@linkageGa.title>【梦中舞会人偶寻访】</>的结束而清零。因为累计次数而增加的获得概率，不会应用于接下来其他任意寻访。",
+            },
+        ]
+
+
 def get_advanced_gacha_manager(player_data, request_json, response):
     pool_id = request_json["poolId"]
     gacha_type = pool_id_gacha_type_dict[pool_id]
@@ -1396,6 +1587,10 @@ def get_advanced_gacha_manager(player_data, request_json, response):
         )
     if gacha_type == "normal":
         return AdvancedGachaNormalManager(
+            player_data, request_json, response, pool_id, gacha_type
+        )
+    if gacha_type == "linkage":
+        return AdvancedGachaLinkageManager(
             player_data, request_json, response, pool_id, gacha_type
         )
     return AdvancedGachaSimpleManager(

@@ -49,3 +49,15 @@ async def social_setCardShowMedal(player_data, request: Request):
 
     response = {}
     return response
+
+
+@router.post("/social/setStarFriendList")
+@player_data_decorator
+async def social_setStarFriendList(player_data, request: Request):
+    request_json = await request.json()
+
+    response = {
+        "result": 0,
+        "newIdList": [],
+    }
+    return response
