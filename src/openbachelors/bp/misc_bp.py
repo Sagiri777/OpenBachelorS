@@ -443,6 +443,19 @@ async def activity_enemyDuel_startMatch(player_data, request: Request):
     return response
 
 
+def get_server_token(player_data):
+    activity_id = player_data.extra_save.save_obj["enemyDuel_activityId"]
+    mode_id = player_data.extra_save.save_obj["enemyDuel_modeId"]
+
+    stage_id = player_data["activity"]["ENEMY_DUEL"][activity_id]["modeInfo"][mode_id][
+        "curStage"
+    ]
+
+    server_token = "|".join([mode_id, stage_id])
+
+    return server_token
+
+
 @router.post("/activity/enemyDuel/queryMatch")
 @player_data_decorator
 async def activity_enemyDuel_queryMatch(player_data, request: Request):
@@ -453,17 +466,21 @@ async def activity_enemyDuel_queryMatch(player_data, request: Request):
             "result": 1,
             "team": null,
         }
-    else:
-        multiplayer_addr = const_json_loader[CONFIG_JSON]["multiplayer_addr"]
-        response = {
-            "result": 0,
-            "team": {
-                "teamId": "some_team_id",
-                "serverAddress": multiplayer_addr,
-                "serverToken": "some_server_token",
-            },
-            "playerCnt": 8,
-        }
+        return response
+
+    multiplayer_addr = const_json_loader[CONFIG_JSON]["multiplayer_addr"]
+
+    server_token = get_server_token(player_data)
+
+    response = {
+        "result": 0,
+        "team": {
+            "teamId": "some_team_id",
+            "serverAddress": multiplayer_addr,
+            "serverToken": server_token,
+        },
+        "playerCnt": 8,
+    }
     return response
 
 
