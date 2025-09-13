@@ -6,6 +6,16 @@ This project is a game server only. If you are looking for a game launcher, plea
 
 Discord: [https://discord.gg/W4yPMpBv8F](https://discord.gg/W4yPMpBv8F)
 
+-----
+
+2025.09.14
+这个fork主要是改了一下用户名和cmd，确实没加啥新东西
+而且有不熟悉bachelor的结构，搞私服的兴趣没有以前高等等原因，暂且搁置了
+
+-----
+
+
+
 ## How-To
 
 ### 1. Setup Server
