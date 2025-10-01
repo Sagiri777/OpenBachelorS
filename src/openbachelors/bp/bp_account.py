@@ -25,7 +25,7 @@ async def account_login(request: Request):
 
     response = {
         "result": 0,
-        "uid": "123456789",
+        "uid": "888888888",
         "secret": token,
         "serviceLicenseVersion": 0,
         "majorVersion": "354",
