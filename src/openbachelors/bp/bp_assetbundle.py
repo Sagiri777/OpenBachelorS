@@ -2,12 +2,12 @@ import os
 import json
 from typing import Any
 from dataclasses import dataclass
+import asyncio
 
 from fastapi import APIRouter
 from fastapi import Request, Response
 from fastapi.responses import FileResponse
 from fastapi.responses import RedirectResponse
-import httpx
 import aiofiles
 
 from ..const.json_const import true, false, null
@@ -20,7 +20,14 @@ from ..const.filepath import (
 )
 from ..util.const_json_loader import const_json_loader
 from ..util.mod_loader import mod_loader
-from ..util.helper import is_valid_res_version, is_valid_asset_filename, download_file
+from ..util.helper import (
+    is_valid_res_version,
+    is_valid_asset_filename,
+    download_file,
+    try_get_filelock,
+    release_filelock,
+    get_httpx_client,
+)
 from ..util.log_helper import IS_DEBUG
 
 router = APIRouter()
@@ -95,7 +102,7 @@ async def download_asset(res_version, asset_filename):
 
     src_res_version = const_json_loader[VERSION_JSON]["version"]["resVersion"]
     if const_json_loader[CONFIG_JSON]["mod"] and res_version != src_res_version:
-        mod_result = try_mod_result(res_version, asset_filename, src_res_version)
+        mod_result = await try_mod_result(res_version, asset_filename, src_res_version)
 
         if mod_result is not None:
             return mod_result
@@ -107,26 +114,30 @@ async def download_asset(res_version, asset_filename):
     asset_filepath = os.path.join(asset_dirpath, asset_filename)
     asset_abs_filepath = os.path.abspath(asset_filepath)
 
-    if not os.path.isfile(asset_filepath):
-        url = f"{ORIG_ASSET_URL_PREFIX}/{res_version}/{asset_filename}"
+    url = f"{ORIG_ASSET_URL_PREFIX}/{res_version}/{asset_filename}"
 
-        if (
-            const_json_loader[CONFIG_JSON]["redirect_asset"]
-            and asset_filename != HOT_UPDATE_LIST_JSON
-        ):
-            return DownloadAssetResult.Redirect(
-                url=f"{ORIG_ASSET_URL_PREFIX}/{res_version}/{asset_filename}"
-            )
+    while not try_get_filelock(url):
+        await asyncio.sleep(10)
 
-        async with httpx.AsyncClient() as client:
+    try:
+        if not os.path.isfile(asset_filepath):
+            if (
+                const_json_loader[CONFIG_JSON]["redirect_asset"]
+                and asset_filename != HOT_UPDATE_LIST_JSON
+            ):
+                return DownloadAssetResult.Redirect(url=url)
+
+            client = get_httpx_client()
             req = await client.head(url)
 
-        if req.status_code != 200:
-            return DownloadAssetResult.HttpStatusCode(status_code=404)
+            if req.status_code != 200:
+                return DownloadAssetResult.HttpStatusCode(status_code=404)
 
-        await download_file(url, asset_filename, asset_dirpath)
+            await download_file(url, asset_filename, asset_dirpath)
 
-    return DownloadAssetResult.SendFile(file_path=asset_abs_filepath)
+        return DownloadAssetResult.SendFile(file_path=asset_abs_filepath)
+    finally:
+        release_filelock(url)
 
 
 @router.get("/assetbundle/official/Android/assets/{res_version}/{asset_filename}")

@@ -32,11 +32,15 @@ from hashlib import md5
 import random
 import asyncio
 import urllib.parse
+from pathlib import Path
+import time
+import functools
 
 from pathvalidate import is_valid_filename
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 import aiofiles
+import httpx
 
 from ..const.filepath import TMP_DIRPATH
 
@@ -59,13 +63,13 @@ MAX_USERNAME_LENGTH = 64
 def get_username_by_token(token: str) -> str:
   
     if token != "1":
-        return urllib.parse.quote(token)[:MAX_USERNAME_LENGTH]
+        return urllib.parse.quote(token, safe="")[:MAX_USERNAME_LENGTH]
     elif token == "1":
         return "雪村葵"
 
 
 def encode_stage_id(stage_id: str) -> str:
-    return urllib.parse.unquote(stage_id)
+    return urllib.parse.quote(stage_id, safe="")
 
 
 def decode_stage_id(stage_id: str) -> str:
@@ -171,6 +175,46 @@ def remove_aria2_tmpfile(tmp_filename):
         pass
 
 
+def get_filelock_filepth(filelock_name: str) -> Path:
+    return Path(TMP_DIRPATH) / f"{urllib.parse.quote(filelock_name, safe='')}.lock"
+
+
+FILELOCK_EXPIRE_SEC = 600
+
+
+def try_expire_filelock(filelock_filepth: Path):
+    cur_time = time.time()
+
+    try:
+        mtime = filelock_filepth.stat().st_mtime
+        if not (mtime - 10 < cur_time < mtime + FILELOCK_EXPIRE_SEC):
+            filelock_filepth.unlink(missing_ok=True)
+    except Exception:
+        pass
+
+
+def try_get_filelock(filelock_name: str) -> bool:
+    filelock_filepth = get_filelock_filepth(filelock_name)
+
+    os.makedirs(TMP_DIRPATH, exist_ok=True)
+
+    try_expire_filelock(filelock_filepth)
+
+    try:
+        filelock_filepth.touch(exist_ok=False)
+        return True
+    except Exception:
+        pass
+
+    return False
+
+
+def release_filelock(filelock_name: str):
+    filelock_filepth = get_filelock_filepth(filelock_name)
+
+    filelock_filepth.unlink(missing_ok=True)
+
+
 async def download_file(url: str, filename: str, dirpath: str):
     import httpx
     
@@ -195,43 +239,23 @@ async def download_file(url: str, filename: str, dirpath: str):
                     "-o",
                     tmp_filename,
                     "--auto-file-renaming=false",
-                    "--connect-timeout=30",
-                    "--timeout=60",
                     url,
                 ],
-                capture_output=True,
-                text=True
             )
         )
 
         if proc.returncode:
-            remove_aria2_tmpfile(tmp_filename)
             raise ConnectionError(f"download_file: file {filename} failed")
-        elif proc.returncode == 0:
-            # aria2c 下载成功
-            os.makedirs(dirpath, exist_ok=True)
-            os.replace(os.path.join(TMP_DIRPATH, tmp_filename), os.path.join(dirpath, filename))
-            return
-        else:
-            print(f"aria2c failed with return code {proc.returncode}: {proc.stderr}")
-    
-    except Exception as e:
-        print(f"aria2c download failed: {e}")
-    
-    # aria2c 失败，使用 httpx 作为备用方案
-    try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.get(url)
-            response.raise_for_status()
-            
-            os.makedirs(dirpath, exist_ok=True)
-            filepath = os.path.join(dirpath, filename)
-            
-            async with aiofiles.open(filepath, 'wb') as f:
-                await f.write(response.content)
-                
-    except Exception as e:
-        raise ConnectionError(f"download_file: file {filename} failed - {str(e)}")
+        os.makedirs(dirpath, exist_ok=True)
+
+        try:
+            os.replace(
+                os.path.join(TMP_DIRPATH, tmp_filename), os.path.join(dirpath, filename)
+            )
+        except Exception:
+            raise
+    finally:
+        remove_aria2_tmpfile(tmp_filename)
 
 
 def is_valid_res_version(res_version: str) -> bool:
@@ -329,3 +353,8 @@ def get_char_str_tag_lst(char_obj):
         char_str_tag_lst += char_obj["tagList"].copy()
 
     return char_str_tag_lst
+
+
+@functools.lru_cache
+def get_httpx_client():
+    return httpx.AsyncClient()

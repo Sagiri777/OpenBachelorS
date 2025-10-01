@@ -113,6 +113,32 @@ async def quest_battleContinue(player_data, request: Request):
     return response
 
 
+NUM_ASSIST_PER_PAGE = 9
+
+
+def get_num_assist_page(assist_lst):
+    # simple math
+    return (len(assist_lst) + NUM_ASSIST_PER_PAGE - 1) // NUM_ASSIST_PER_PAGE
+
+
+def get_assist_page_key(request_json):
+    if const_json_loader[CONFIG_JSON]["assist_ext"]:
+        profession = request_json["profession"]
+        return f"assist_ext_paging_{profession}"
+
+    return "assist_default_paging"
+
+
+def get_assist_page_idx(player_data, request_json):
+    assist_page_key = get_assist_page_key(request_json)
+    return player_data.extra_save.save_obj.get(assist_page_key, 0)
+
+
+def set_assist_page_idx(player_data, request_json, assist_page_idx):
+    assist_page_key = get_assist_page_key(request_json)
+    player_data.extra_save.save_obj[assist_page_key] = assist_page_idx
+
+
 @router.post("/quest/getAssistList")
 @player_data_decorator
 async def quest_getAssistList(player_data, request: Request):
@@ -131,6 +157,19 @@ async def quest_getAssistList(player_data, request: Request):
         friend_uid_lst = [
             get_friend_uid_from_assist_lst_idx(i) for i in range(len(assist_lst))
         ]
+
+    num_assist_page = get_num_assist_page(assist_lst)
+
+    assist_page_idx = get_assist_page_idx(player_data, request_json) % num_assist_page
+
+    if request_json["askRefresh"]:
+        assist_page_idx = (assist_page_idx + 1) % num_assist_page
+        set_assist_page_idx(player_data, request_json, assist_page_idx)
+
+    lower_bound = assist_page_idx * NUM_ASSIST_PER_PAGE
+    upper_bound = (assist_page_idx + 1) * NUM_ASSIST_PER_PAGE
+    assist_lst = assist_lst[lower_bound:upper_bound]
+    friend_uid_lst = friend_uid_lst[lower_bound:upper_bound]
 
     response = {"allowAskTs": 1700000000, "assistList": []}
 

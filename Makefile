@@ -1,8 +1,16 @@
-.PHONY: setup dev prod console asset-downloade distclean
+OS := $(shell uname)
 
-setup:
-	-brew install python pipx aria2
-	-sudo apt install pipx aria2
+.PHONY: setup install-package dev prod console asset-downloade distclean
+
+ifeq ($(OS), Darwin)
+install-package:
+	brew install python pipx aria2
+else
+install-package:
+	sudo apt install pipx aria2
+endif
+
+setup: install-package
 	pipx install poetry
 	pipx run poetry install
 

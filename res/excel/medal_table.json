@@ -13658,6 +13658,147 @@
       "isHidden": false
     },
     {
+      "medalId": "medal_activity_1vhalfidle_01",
+      "medalName": "次生前哨奖章",
+      "medalType": "activityMedal",
+      "slotId": 1,
+      "preMedalIdList": [],
+      "rarity": "T3",
+      "template": "PassStageSome",
+      "unlockParam": [
+        "3",
+        "act1halfidle_01;act1halfidle_02;act1halfidle_03;act1halfidle_04;act1halfidle_05;act1halfidle_06",
+        "6"
+      ],
+      "getMethod": "次生预案活动期间，通关所有常规关卡",
+      "description": "您在次生预案中成功建立了多座前哨支点。\n依靠您的指挥布局，诸多生产基地在远方拔地而起。它们支撑起的是罗德岛未来的希望。",
+      "advancedMedal": null,
+      "originMedal": null,
+      "displayTime": -1,
+      "expireTimes": [
+        {
+          "start": 1760817600,
+          "end": -1,
+          "type": "PERM"
+        }
+      ],
+      "medalRewardGroup": [],
+      "isHidden": false
+    },
+    {
+      "medalId": "medal_activity_1vhalfidle_02",
+      "medalName": "次生支点奖章",
+      "medalType": "activityMedal",
+      "slotId": 2,
+      "preMedalIdList": [],
+      "rarity": "T2",
+      "template": "PassStageSome",
+      "unlockParam": [
+        "3",
+        "act1halfidle_h01;act1halfidle_h02;act1halfidle_h03;act1halfidle_h04;act1halfidle_h05;act1halfidle_h06;act1halfidle_h07;act1halfidle_h08",
+        "8"
+      ],
+      "getMethod": "次生预案活动期间，通关所有险地关卡",
+      "description": "您在次生预案中成功于艰险之地建立了多座前哨支点。\n依靠您的指挥布局，即便最艰险的环境中也有罗德岛的生产基地在高效运作。我们此刻的冒险拼搏正是为了将来的道路能走得更平稳。",
+      "advancedMedal": null,
+      "originMedal": null,
+      "displayTime": -1,
+      "expireTimes": [
+        {
+          "start": 1760817600,
+          "end": -1,
+          "type": "PERM"
+        }
+      ],
+      "medalRewardGroup": [],
+      "isHidden": false
+    },
+    {
+      "medalId": "medal_activity_1vhalfidle_03",
+      "medalName": "次生战服奖章",
+      "medalType": "activityMedal",
+      "slotId": 3,
+      "preMedalIdList": [],
+      "rarity": "T2",
+      "template": "GotItemBeforeTime",
+      "unlockParam": [
+        "1",
+        "char_4017_puzzle@shining#3",
+        "1760817599"
+      ],
+      "getMethod": "次生预案活动期间，获得时装冷色摇滚",
+      "description": "次生预案中随时装附送的蚀刻章。\n冷色弦音，不羁回响。",
+      "advancedMedal": null,
+      "originMedal": null,
+      "displayTime": -1,
+      "expireTimes": [
+        {
+          "start": 1760817600,
+          "end": -1,
+          "type": "PERM"
+        }
+      ],
+      "medalRewardGroup": [],
+      "isHidden": false
+    },
+    {
+      "medalId": "medal_activity_1vhalfidle_04",
+      "medalName": "次生装饰奖章",
+      "medalType": "activityMedal",
+      "slotId": 4,
+      "preMedalIdList": [],
+      "rarity": "T2",
+      "template": "GotItemBeforeTime",
+      "unlockParam": [
+        "1",
+        "furni_act1vhalfidle_bonsai_01",
+        "1760817599"
+      ],
+      "getMethod": "次生预案活动期间，获得家具“应急备案”生态缸",
+      "description": "次生预案中随家具附送的蚀刻章。\n这是一份来自前哨支点的礼物，用来纪念您布置下的所有生产模块。至于其中的小磐蟹......嗯，那是个运输过程中的意外。",
+      "advancedMedal": null,
+      "originMedal": null,
+      "displayTime": -1,
+      "expireTimes": [
+        {
+          "start": 1760817600,
+          "end": -1,
+          "type": "PERM"
+        }
+      ],
+      "medalRewardGroup": [],
+      "isHidden": false
+    },
+    {
+      "medalId": "medal_activity_1vhalfidle_05",
+      "medalName": "次生培训奖章",
+      "medalType": "activityMedal",
+      "slotId": 5,
+      "preMedalIdList": [],
+      "rarity": "T2",
+      "template": "Act1HalfidleUpgradeChar",
+      "unlockParam": [
+        "act1vhalfidle",
+        "8",
+        "0",
+        "2"
+      ],
+      "getMethod": "次生预案活动期间，使战备中的8名干员达到2级精英职称",
+      "description": "您在次生预案中为多名干员进行了充分有效的生产培训。\n这里的每一个人都拥有从头学起的勇气，更有不畏艰苦的气魄。罗德岛教会我们的，正是我们用来建设罗德岛的！",
+      "advancedMedal": "medal_activity_1vhalfidle_055",
+      "originMedal": null,
+      "displayTime": -1,
+      "expireTimes": [
+        {
+          "start": 1760817600,
+          "end": -1,
+          "type": "PERM"
+        }
+      ],
+      "medalRewardGroup": [],
+      "isHidden": false
+    },
+    {
       "medalId": "medal_activity_act2enemyduel_01",
       "medalName": "蜜果赞助奖章",
       "medalType": "activityMedal",
@@ -17472,7 +17613,7 @@
       "template": "GotCharsBeforeTime",
       "unlockParam": [
         "char_4162_cathy",
-        "1730231999"
+        "1759435199"
       ],
       "getMethod": "追迹日落以西活动期间，获得干员凯瑟琳",
       "description": "您收到了一份字迹有力的探亲申请。\n她离开了流水线，但不会放下那柄敲出胜利的铁锤。她在审视，她会督促。",
@@ -17503,11 +17644,11 @@
       "rarity": "T1",
       "template": "ActivityCoinCost",
       "unlockParam": [
-        "act37side",
-        "act37side_token_nay",
-        "4000"
+        "act37sre",
+        "act37side_token_nay_rep_1",
+        "2400"
       ],
-      "getMethod": "追迹日落以西活动期间，在[提案决议厅]中消耗4000个“我反对！”",
+      "getMethod": "追迹日落以西活动期间，在[提案决议厅]中消耗2400个“我反对！”",
       "description": "您旁听了伦蒂尼姆议员在许多议案上的争论。\n“这事你不服？走，我们去给议会写信。海布里区出身的议员会帮我们说话的。”",
       "advancedMedal": null,
       "originMedal": null,
@@ -17569,7 +17710,7 @@
       "rarity": "T2",
       "template": "MissionCompleteSome",
       "unlockParam": [
-        "37sideActivity_1;37sideActivity_2;37sideActivity_3;37sideActivity_4;37sideActivity_5;37sideActivity_6;37sideActivity_7;37sideActivity_8;37sideActivity_9;37sideActivity_10;37sideActivity_11;37sideActivity_12;37sideActivity_13;37sideActivity_14;37sideActivity_15;37sideActivity_16;37sideActivity_17;37sideActivity_18;37sideActivity_19;37sideActivity_20;37sideActivity_21;37sideActivity_22;37sideActivity_23;37sideActivity_24;37sideActivity_25;37sideActivity_26",
+        "37sreActivity_1;37sreActivity_2;37sreActivity_3;37sreActivity_4;37sreActivity_5;37sreActivity_6;37sreActivity_7;37sreActivity_8;37sreActivity_9;37sreActivity_10;37sreActivity_11;37sreActivity_12;37sreActivity_13;37sreActivity_14;37sreActivity_15;37sreActivity_16;37sreActivity_17;37sreActivity_18;37sreActivity_19;37sreActivity_20;37sreActivity_21;37sreActivity_22;37sreActivity_23;37sreActivity_24;37sreActivity_25;37sreActivity_26",
         "26"
       ],
       "getMethod": "完成[待议法案]中全部内容，并领取奖励",
@@ -17738,11 +17879,11 @@
       "rarity": "T2",
       "template": "TotalSimpleTokenCount",
       "unlockParam": [
-        "act37side",
+        "act37sre",
         "char_get_equip",
-        "100"
+        "75"
       ],
-      "getMethod": "追迹日落以西活动期间，累计拾取100次装备",
+      "getMethod": "追迹日落以西活动期间，累计拾取75次装备",
       "description": "您和伦蒂尼姆市民们一起，从建筑残骸中挖掘出了不少有用的材料。\n一些人找回了战前生活残存的痕迹，一些私人物品始终没有人来认领。",
       "advancedMedal": null,
       "originMedal": null,
@@ -36277,6 +36418,35 @@
           "start": 1756497600,
           "end": -1,
           "type": "TEMP"
+        }
+      ],
+      "medalRewardGroup": [],
+      "isHidden": false
+    },
+    {
+      "medalId": "medal_activity_1vhalfidle_055",
+      "medalName": "次生培训奖章",
+      "medalType": "activityMedal",
+      "slotId": 5,
+      "preMedalIdList": null,
+      "rarity": "T2D5",
+      "template": "Act1HalfidleUpgradeChar",
+      "unlockParam": [
+        "act1vhalfidle",
+        "16",
+        "0",
+        "2"
+      ],
+      "getMethod": "次生预案活动期间，使战备中的16名干员达到2级精英职称",
+      "description": null,
+      "advancedMedal": null,
+      "originMedal": "medal_activity_1vhalfidle_05",
+      "displayTime": -1,
+      "expireTimes": [
+        {
+          "start": 1760817600,
+          "end": -1,
+          "type": "PERM"
         }
       ],
       "medalRewardGroup": [],

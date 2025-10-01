@@ -201,7 +201,7 @@ async def activity_enemyDuel_singleBattleStart(player_data, request: Request):
 async def activity_enemyDuel_singleBattleFinish(player_data, request: Request):
     request_json = await request.json()
 
-    log_battle_log_if_necessary(player_data, request_json["activityId"])
+    log_battle_log_if_necessary(player_data, request_json["data"])
 
     activity_id = request_json["activityId"]
     activity_table = const_json_loader[ACTIVITY_TABLE]
@@ -461,12 +461,12 @@ def get_server_token(player_data):
 async def activity_enemyDuel_queryMatch(player_data, request: Request):
     request_json = await request.json()
 
-    if request_json["needLeave"]:
-        response = {
-            "result": 1,
-            "team": null,
-        }
-        return response
+    # if request_json["needLeave"]:
+    #     response = {
+    #         "result": 1,
+    #         "team": null,
+    #     }
+    #     return response
 
     multiplayer_addr = const_json_loader[CONFIG_JSON]["multiplayer_addr"]
 
