@@ -63,6 +63,54 @@
                 ],
                 "fts": 1700000000,
                 "rts": 1700000000
+            },
+            "spst_16-01": {
+                "id": "spst_16-01",
+                "type": "STAGE",
+                "val": [
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "fts": 1700000000,
+                "rts": 1700000000
+            },
+            "spst_16-02": {
+                "id": "spst_16-02",
+                "type": "STAGE",
+                "val": [
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "fts": 1700000000,
+                "rts": 1700000000
+            },
+            "spst_16-03": {
+                "id": "spst_16-03",
+                "type": "STAGE",
+                "val": [
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "fts": 1700000000,
+                "rts": 1700000000
+            },
+            "spst_16-04": {
+                "id": "spst_16-04",
+                "type": "STAGE",
+                "val": [
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "fts": 1700000000,
+                "rts": 1700000000
             }
         },
         "mainlineBannedStages": [],
@@ -207,6 +255,111 @@
                         "main_15-18_1a",
                         "main_15-18_2a"
                     ]
+                },
+                "main_16-01#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-01_1a",
+                        "main_16-01_2a"
+                    ]
+                },
+                "main_16-02#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-02_1a",
+                        "main_16-02_2a"
+                    ]
+                },
+                "main_16-03#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-03_1a",
+                        "main_16-03_2a"
+                    ]
+                },
+                "main_16-04#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-04_1a",
+                        "main_16-04_2a"
+                    ]
+                },
+                "main_16-05#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-05_1a",
+                        "main_16-05_2a"
+                    ]
+                },
+                "main_16-06#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-06_1a",
+                        "main_16-06_2a"
+                    ]
+                },
+                "main_16-07#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-07_1a",
+                        "main_16-07_2a"
+                    ]
+                },
+                "main_16-09#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-09_1a",
+                        "main_16-09_2a"
+                    ]
+                },
+                "main_16-10#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-10_1a",
+                        "main_16-10_2a"
+                    ]
+                },
+                "main_16-11#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-11_1a",
+                        "main_16-11_2a"
+                    ]
+                },
+                "main_16-12#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-12_1a",
+                        "main_16-12_2a"
+                    ]
+                },
+                "main_16-13#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-13_1a",
+                        "main_16-13_2a"
+                    ]
+                },
+                "main_16-14#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-14_1a",
+                        "main_16-14_2a"
+                    ]
+                },
+                "main_16-15#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-15_1a",
+                        "main_16-15_2a"
+                    ]
+                },
+                "main_16-16#s": {
+                    "tagFinish": 2,
+                    "tagSelected": [
+                        "main_16-16_1a",
+                        "main_16-16_2a"
+                    ]
                 }
             },
             "groups": {
@@ -247,6 +400,47 @@
                             "state": 2
                         },
                         "main_15_12": {
+                            "state": 2
+                        }
+                    }
+                },
+                "main_16": {
+                    "point": 30,
+                    "rewards": {
+                        "main_16_1": {
+                            "state": 2
+                        },
+                        "main_16_2": {
+                            "state": 2
+                        },
+                        "main_16_3": {
+                            "state": 2
+                        },
+                        "main_16_4": {
+                            "state": 2
+                        },
+                        "main_16_5": {
+                            "state": 2
+                        },
+                        "main_16_6": {
+                            "state": 2
+                        },
+                        "main_16_7": {
+                            "state": 2
+                        },
+                        "main_16_8": {
+                            "state": 2
+                        },
+                        "main_16_9": {
+                            "state": 2
+                        },
+                        "main_16_10": {
+                            "state": 2
+                        },
+                        "main_16_11": {
+                            "state": 2
+                        },
+                        "main_16_12": {
                             "state": 2
                         }
                     }
@@ -609,6 +803,326 @@
             }
         },
         "BOSS_RUSH": {
+            "act1bossrush": {
+                "milestone": {
+                    "point": 3625,
+                    "got": [
+                        "mileStone_1",
+                        "mileStone_10",
+                        "mileStone_11",
+                        "mileStone_12",
+                        "mileStone_13",
+                        "mileStone_14",
+                        "mileStone_15",
+                        "mileStone_16",
+                        "mileStone_17",
+                        "mileStone_18",
+                        "mileStone_19",
+                        "mileStone_2",
+                        "mileStone_20",
+                        "mileStone_21",
+                        "mileStone_22",
+                        "mileStone_23",
+                        "mileStone_24",
+                        "mileStone_25",
+                        "mileStone_26",
+                        "mileStone_27",
+                        "mileStone_28",
+                        "mileStone_29",
+                        "mileStone_3",
+                        "mileStone_30",
+                        "mileStone_31",
+                        "mileStone_32",
+                        "mileStone_33",
+                        "mileStone_34",
+                        "mileStone_35",
+                        "mileStone_36",
+                        "mileStone_37",
+                        "mileStone_38",
+                        "mileStone_39",
+                        "mileStone_4",
+                        "mileStone_40",
+                        "mileStone_41",
+                        "mileStone_42",
+                        "mileStone_43",
+                        "mileStone_44",
+                        "mileStone_45",
+                        "mileStone_5",
+                        "mileStone_6",
+                        "mileStone_7",
+                        "mileStone_8",
+                        "mileStone_9"
+                    ]
+                },
+                "relic": {
+                    "token": {
+                        "current": 0,
+                        "total": 240
+                    },
+                    "level": {
+                        "act1bossrush_relic_01": 3,
+                        "act1bossrush_relic_02": 3,
+                        "act1bossrush_relic_03": 3,
+                        "act1bossrush_relic_04": 3
+                    },
+                    "select": "act1bossrush_relic_01"
+                },
+                "best": {
+                    "act1bossrush_01": 2,
+                    "act1bossrush_tm01": 2,
+                    "act1bossrush_ex01": 2,
+                    "act1bossrush_02": 3,
+                    "act1bossrush_tm02": 3,
+                    "act1bossrush_ex02": 3,
+                    "act1bossrush_03": 3,
+                    "act1bossrush_tm03": 3,
+                    "act1bossrush_ex03": 3,
+                    "act1bossrush_04": 3,
+                    "act1bossrush_tm04": 3,
+                    "act1bossrush_ex04": 3,
+                    "act1bossrush_fin04": 3
+                }
+            },
+            "act2bossrush": {
+                "milestone": {
+                    "point": 3625,
+                    "got": [
+                        "mileStone_1",
+                        "mileStone_10",
+                        "mileStone_11",
+                        "mileStone_12",
+                        "mileStone_13",
+                        "mileStone_14",
+                        "mileStone_15",
+                        "mileStone_16",
+                        "mileStone_17",
+                        "mileStone_18",
+                        "mileStone_19",
+                        "mileStone_2",
+                        "mileStone_20",
+                        "mileStone_21",
+                        "mileStone_22",
+                        "mileStone_23",
+                        "mileStone_24",
+                        "mileStone_25",
+                        "mileStone_26",
+                        "mileStone_27",
+                        "mileStone_28",
+                        "mileStone_29",
+                        "mileStone_3",
+                        "mileStone_30",
+                        "mileStone_31",
+                        "mileStone_32",
+                        "mileStone_33",
+                        "mileStone_34",
+                        "mileStone_35",
+                        "mileStone_36",
+                        "mileStone_37",
+                        "mileStone_38",
+                        "mileStone_39",
+                        "mileStone_4",
+                        "mileStone_40",
+                        "mileStone_41",
+                        "mileStone_42",
+                        "mileStone_43",
+                        "mileStone_44",
+                        "mileStone_45",
+                        "mileStone_5",
+                        "mileStone_6",
+                        "mileStone_7",
+                        "mileStone_8",
+                        "mileStone_9"
+                    ]
+                },
+                "relic": {
+                    "token": {
+                        "current": 0,
+                        "total": 240
+                    },
+                    "level": {
+                        "act2bossrush_relic_01": 3,
+                        "act2bossrush_relic_02": 3,
+                        "act2bossrush_relic_03": 3,
+                        "act2bossrush_relic_04": 3
+                    },
+                    "select": "act2bossrush_relic_01"
+                },
+                "best": {
+                    "act2bossrush_01": 2,
+                    "act2bossrush_tm01": 2,
+                    "act2bossrush_ex01": 2,
+                    "act2bossrush_02": 3,
+                    "act2bossrush_tm02": 3,
+                    "act2bossrush_ex02": 3,
+                    "act2bossrush_03": 3,
+                    "act2bossrush_tm03": 3,
+                    "act2bossrush_ex03": 3,
+                    "act2bossrush_04": 3,
+                    "act2bossrush_tm04": 3,
+                    "act2bossrush_ex04": 3,
+                    "act2bossrush_fin04": 3
+                }
+            },
+            "act3bossrush": {
+                "milestone": {
+                    "point": 3625,
+                    "got": [
+                        "mileStone_1",
+                        "mileStone_10",
+                        "mileStone_11",
+                        "mileStone_12",
+                        "mileStone_13",
+                        "mileStone_14",
+                        "mileStone_15",
+                        "mileStone_16",
+                        "mileStone_17",
+                        "mileStone_18",
+                        "mileStone_19",
+                        "mileStone_2",
+                        "mileStone_20",
+                        "mileStone_21",
+                        "mileStone_22",
+                        "mileStone_23",
+                        "mileStone_24",
+                        "mileStone_25",
+                        "mileStone_26",
+                        "mileStone_27",
+                        "mileStone_28",
+                        "mileStone_29",
+                        "mileStone_3",
+                        "mileStone_30",
+                        "mileStone_31",
+                        "mileStone_32",
+                        "mileStone_33",
+                        "mileStone_34",
+                        "mileStone_35",
+                        "mileStone_36",
+                        "mileStone_37",
+                        "mileStone_38",
+                        "mileStone_39",
+                        "mileStone_4",
+                        "mileStone_40",
+                        "mileStone_41",
+                        "mileStone_42",
+                        "mileStone_43",
+                        "mileStone_44",
+                        "mileStone_45",
+                        "mileStone_5",
+                        "mileStone_6",
+                        "mileStone_7",
+                        "mileStone_8",
+                        "mileStone_9"
+                    ]
+                },
+                "relic": {
+                    "token": {
+                        "current": 0,
+                        "total": 240
+                    },
+                    "level": {
+                        "act3bossrush_relic_01": 3,
+                        "act3bossrush_relic_02": 3,
+                        "act3bossrush_relic_03": 3,
+                        "act3bossrush_relic_04": 3
+                    },
+                    "select": "act3bossrush_relic_01"
+                },
+                "best": {
+                    "act3bossrush_01": 2,
+                    "act3bossrush_tm01": 2,
+                    "act3bossrush_ex01": 2,
+                    "act3bossrush_02": 3,
+                    "act3bossrush_tm02": 3,
+                    "act3bossrush_ex02": 3,
+                    "act3bossrush_03": 3,
+                    "act3bossrush_tm03": 3,
+                    "act3bossrush_ex03": 3,
+                    "act3bossrush_04": 3,
+                    "act3bossrush_tm04": 3,
+                    "act3bossrush_ex04": 3,
+                    "act3bossrush_fin04": 3
+                }
+            },
+            "act4bossrush": {
+                "milestone": {
+                    "point": 3625,
+                    "got": [
+                        "mileStone_1",
+                        "mileStone_10",
+                        "mileStone_11",
+                        "mileStone_12",
+                        "mileStone_13",
+                        "mileStone_14",
+                        "mileStone_15",
+                        "mileStone_16",
+                        "mileStone_17",
+                        "mileStone_18",
+                        "mileStone_19",
+                        "mileStone_2",
+                        "mileStone_20",
+                        "mileStone_21",
+                        "mileStone_22",
+                        "mileStone_23",
+                        "mileStone_24",
+                        "mileStone_25",
+                        "mileStone_26",
+                        "mileStone_27",
+                        "mileStone_28",
+                        "mileStone_29",
+                        "mileStone_3",
+                        "mileStone_30",
+                        "mileStone_31",
+                        "mileStone_32",
+                        "mileStone_33",
+                        "mileStone_34",
+                        "mileStone_35",
+                        "mileStone_36",
+                        "mileStone_37",
+                        "mileStone_38",
+                        "mileStone_39",
+                        "mileStone_4",
+                        "mileStone_40",
+                        "mileStone_41",
+                        "mileStone_42",
+                        "mileStone_43",
+                        "mileStone_44",
+                        "mileStone_45",
+                        "mileStone_5",
+                        "mileStone_6",
+                        "mileStone_7",
+                        "mileStone_8",
+                        "mileStone_9"
+                    ]
+                },
+                "relic": {
+                    "token": {
+                        "current": 0,
+                        "total": 240
+                    },
+                    "level": {
+                        "act4bossrush_relic_01": 3,
+                        "act4bossrush_relic_02": 3,
+                        "act4bossrush_relic_03": 3,
+                        "act4bossrush_relic_04": 3
+                    },
+                    "select": "act4bossrush_relic_01"
+                },
+                "best": {
+                    "act4bossrush_01": 2,
+                    "act4bossrush_tm01": 2,
+                    "act4bossrush_ex01": 2,
+                    "act4bossrush_02": 3,
+                    "act4bossrush_tm02": 3,
+                    "act4bossrush_ex02": 3,
+                    "act4bossrush_03": 3,
+                    "act4bossrush_tm03": 3,
+                    "act4bossrush_ex03": 3,
+                    "act4bossrush_04": 3,
+                    "act4bossrush_tm04": 3,
+                    "act4bossrush_ex04": 3,
+                    "act4bossrush_fin04": 3
+                }
+            },
             "act5bossrush": {
                 "milestone": {
                     "point": 3625,
@@ -687,6 +1201,16 @@
                     "act5bossrush_tm04": 3,
                     "act5bossrush_ex04": 3,
                     "act5bossrush_fin04": 3
+                }
+            }
+        },
+        "TYPE_ACT24SIDE": {
+            "act24side": {
+                "tool": {
+                    "tool_trap": 2,
+                    "tool_wirebug": 2,
+                    "tool_flashbomb": 2,
+                    "tool_bomb": 2
                 }
             }
         }
@@ -5135,8 +5659,9 @@
                     }
                 },
                 "squad": [
-                    null,
-                    null
+                    "trap_rnfcar",
+                    "trap_ads",
+                    "trap_edd"
                 ]
             }
         }
